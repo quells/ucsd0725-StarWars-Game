@@ -12,21 +12,9 @@
 		<div id="wrapper">
 			<div id="screen">
 				<h1>Star Wars RPG</h1>
-				<div class="character luke">
-					<div class="charAvatar">
-						<div class="avatarCircle"></div>
-					</div>
-					<div class="charDescription">
-						<h3 class="charName">Luke Skywalker</h3>
-						<p class="charWeapon">Weapon: Lightsaber</p>
-						<p class="charATK">ATK: 4</p>
-						<p class="charHP">HP: 90</p>
-					</div>
-					<div class="clear"></div>
-				</div>
-				<div class="clear"></div>
 			</div>
 		</div>
+
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
 		<script src="assets/js/game.js" charset="utf-8"></script>
 		<script type="text/javascript">
@@ -72,6 +60,7 @@
 
 		var starfieldCanvas = $("#starfield")[0];
 		var starfield;
+		var luke, leia, trooper, vader;
 
 		// var lastFrame = Date.now();
 		function drawScreen() {
@@ -86,6 +75,10 @@
 			starfieldCanvas.width = document.body.clientWidth;
 			starfieldCanvas.height = document.body.clientHeight;
 			starfield = new Starfield(starfieldCanvas);
+
+			luke = new Character("luke", "Luke Skywalker", "Lightsaber", 4, 90);
+			$("#screen").append(CharacterView(luke));
+			$("<div>").addClass("clear").appendTo($("#screen"));
 			drawScreen();
 		});
 
