@@ -3,8 +3,109 @@ html, body {
 	height: 100%;
 }
 
+.clear {
+	clear: both;
+}
+
 #starfield {
 	width: 100%;
 	background: 100%;
 	position: fixed;
+	display: block;
+}
+
+body {
+	text-align: center;
+	font-size: 16px;
+}
+
+#wrapper {
+	width: 960px;
+	margin: 0 auto;
+	padding-top: 2em;
+	text-align: left;
+	position: relative;
+}
+
+#screen {
+	padding: 1em;
+	border: 3px solid #FAEA40;
+	border-radius: 1.0em;
+	background: rgba(32, 24, 8, 0.95);
+}
+
+h1 {
+	color: #FAEA40;
+	font-size: 3.0em;
+}
+
+h3 {
+	font-size: 2.0em;
+}
+
+p {
+	font-size: 1.0em;
+	line-height: 1.4;
+}
+
+.character {
+	margin-top: 1.0em;
+	float: left;
+}
+
+.charAvatar {
+	float: left;
+	margin-right: 1.0em;
+}
+
+.avatarCircle {
+	width: 92px;
+	height: 92px;
+	border: 4px solid #F00;
+	border-radius: 50px;
+}
+
+.charDescription {
+	float: left;
+	max-width: 100%;
+	width: auto;
+}
+
+.luke * { color: #68C1E5; }
+.luke * .avatarCircle { border-color: #68C1E5; }
+
+.vader * {
+	color: #E96B5F;
+}
+
+@media screen and (max-width: 980px) {
+	/* MEDIUM */
+	#wrapper {
+		width: 720px;
+		background: rgba(255, 0, 0, 0.2);
+	}
+}
+
+@media screen and (max-width: 768px) {
+	/* TABLET */
+	#wrapper {
+		width: 640px;
+		background: rgba(0, 255, 0, 0.2);
+	}
+}
+
+@media screen and (max-width: 660px) {
+	/* PHONE LANDSCAPE */
+	#wrapper {
+		width: 95%;
+		background: rgba(0, 0, 255, 0.2);
+	}
+}
+
+@media screen and (max-width: 420px) {
+	/* PHONE */
+	#wrapper {
+		width: 95%;
+		background: rgba(0, 0, 255, 0.2);
+	}
 }

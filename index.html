@@ -10,7 +10,22 @@
 	<body>
 		<canvas id="starfield"></canvas>
 		<div id="wrapper">
-
+			<div id="screen">
+				<h1>Star Wars RPG</h1>
+				<div class="character luke">
+					<div class="charAvatar">
+						<div class="avatarCircle"></div>
+					</div>
+					<div class="charDescription">
+						<h3 class="charName">Luke Skywalker</h3>
+						<p class="charWeapon">Weapon: Lightsaber</p>
+						<p class="charATK">ATK: 4</p>
+						<p class="charHP">HP: 90</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
 		<script src="assets/js/game.js" charset="utf-8"></script>
@@ -18,17 +33,19 @@
 		var Starfield = function(canvas) {
 			this.canvas = canvas;
 
-			var area = canvas.width * canvas.height;
-			var density = 0.005;
+			var width = 6000;
+			var height = 6000;
+			var area = width * height;
+			var density = 0.001;
+			var speed = 0.005;
 			var N = Math.floor(area*density);
-			console.log(N);
 			this.stars = new Array(N);
 			for (var i = 0; i < N; i++) {
-				var x = Math.random()*6000;
-				var y = Math.random()*6000;
+				var x = Math.random()*width;
+				var y = Math.random()*height;
 				var size = Math.floor(Math.random()*3) + 1;
-				var dx = (2*Math.random()-1)*0.01*size*size;
-				var dy = (2*Math.random()-1)*0.01*size*size;
+				var dx = (2*Math.random()-1)*speed*size*size;
+				var dy = (2*Math.random()-1)*speed*size*size;
 				this.stars[i] = {
 					"x": x, "y": y,
 					"dx": dx, "dy": dy,
@@ -53,8 +70,8 @@
 			};
 		}
 
+		var starfieldCanvas = $("#starfield")[0];
 		var starfield;
-		var starfieldCanvas = document.getElementById("starfield"); // Does not work with jQuery selector
 
 		// var lastFrame = Date.now();
 		function drawScreen() {
@@ -68,7 +85,6 @@
 		$(document).ready(function() {
 			starfieldCanvas.width = document.body.clientWidth;
 			starfieldCanvas.height = document.body.clientHeight;
-
 			starfield = new Starfield(starfieldCanvas);
 			drawScreen();
 		});
