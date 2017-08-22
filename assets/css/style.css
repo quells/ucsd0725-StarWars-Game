@@ -66,8 +66,11 @@ p {
 }
 
 .charAvatar {
+	width: 100px;
+	height: 100px;
 	float: left;
 	margin-right: 1.0em;
+	position: relative;
 }
 
 .avatarCircle {
@@ -75,6 +78,20 @@ p {
 	height: 92px;
 	border: 4px solid #F00;
 	border-radius: 50px;
+}
+
+.avatarImage {
+	width: 92px;
+	height: 92px;
+	margin: 4px 0 0 4px;
+	position: absolute;
+	border-radius: 50px;
+}
+
+.avatarHealth {
+	width: 100px;
+	height: 100px;
+	position: absolute;
 }
 
 .charDescription {
@@ -113,6 +130,8 @@ p {
 		margin-left: 16px;
 	}
 	.avatarCircle { width: 72px; height: 72px; }
+	.avatarImage { width: 72px; height: 72px; }
+	.charAvatar, .avatarHealth { width: 80px; height: 80px; }
 	.charDescription { margin-top: 6px; }
 	.charName { font-size: 1.5em; }
 }
@@ -130,6 +149,8 @@ p {
 		margin-left: 32px;
 	}
 	.avatarCircle { width: 92px; height: 92px; }
+	.avatarImage { width: 92px; height: 92px; }
+	.charAvatar, .avatarHealth { width: 100px; height: 100px; }
 	.charDescription { margin-top: 12px; }
 	.charName { font-size: 2.0em; }
 }
@@ -147,6 +168,8 @@ p {
 		margin-left: 16px;
 	}
 	.avatarCircle { width: 72px; height: 72px; }
+	.avatarImage { width: 72px; height: 72px; }
+	.charAvatar, .avatarHealth { width: 80px; height: 80px; }
 	.charDescription { margin-top: 6px; }
 	.charName { font-size: 1.5em; }
 }
@@ -170,6 +193,9 @@ p {
 		height: 56px;
 		margin-left: 32px;
 	}
+	.avatarImage { width: 56px; height: 56px; }
+	.charAvatar, .avatarHealth { width: 64px; height: 64px; }
+	.charAvatar { margin-left: 32px; }
 	.charDescription { margin-top: 4px; }
 	.charName { font-size: 1.2em; }
 	p { font-size: 0.8em; }

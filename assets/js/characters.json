@@ -1,0 +1,30 @@
+{
+    "luke": {
+        "name": "Luke Skywalker",
+        "weapon": "Lightsaber",
+        "power": 4,
+        "health": 90,
+        "color": "#68C1E5"
+    },
+    "leia": {
+        "name": "Princess Leia Organa",
+        "weapon": "Blaster",
+        "power": 8,
+        "health": 130,
+        "color": "#32C560"
+    },
+    "trooper": {
+        "name": "Startrooper XJ-72",
+        "weapon": "Blaster",
+        "power": 12,
+        "health": 140,
+        "color": "#EEEEEE"
+    },
+    "vader": {
+        "name": "Darth Vader",
+        "weapon": "Lightsaber",
+        "power": 16,
+        "health": 310,
+        "color": "#E96B5F"
+    }
+}

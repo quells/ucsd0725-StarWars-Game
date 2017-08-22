@@ -1,10 +1,14 @@
-var Character = function(shortName, name, weapon, power, health) {
+var Character = function(shortName, name, weapon, power, health, color) {
     this.shortName = shortName;
     this.name = name;
     this.weapon = weapon;
+    this.brandColor = color;
+
     this.basePower = power;
     this.attackPower = power;
     this.defendPower = power;
+
+    this.maxHealth = health;
     this.health = health;
 
     this.attack = function(other) {
@@ -17,14 +21,15 @@ var Character = function(shortName, name, weapon, power, health) {
     }
 }
 
-var CharacterView = function (character) {
-    var root = $("<div>").addClass("character " + character.shortName);
+var CharacterView = function (c) {
+    var root = $("<div>").addClass("character " + c.shortName);
     var avatar = $("<div>").addClass("charAvatar").appendTo(root);
-    var picture = $("<img>").addClass("avatarCircle").attr("src", "assets/img/" + character.shortName + ".png").appendTo(avatar);
+    $("<img>").addClass("avatarImage").attr("src", "assets/img/" + c.shortName + ".png").appendTo(avatar);
+	$("<canvas>").addClass("avatarHealth").attr("name", c.shortName).attr("brandcolor", c.brandColor).appendTo(avatar);
     var description = $("<div>").addClass("charDescription").appendTo(root);
-    $("<h3>").addClass("charName").text(character.name).appendTo(description);
-    $("<p>").addClass("charWeapon").text("Weapon: " + character.weapon).appendTo(description);
-    $("<p>").addClass("charStatus").text("POW: " + character.attackPower + " HP: " + character.health).appendTo(description);
+    $("<h3>").addClass("charName").text(c.name).appendTo(description);
+    $("<p>").addClass("charWeapon").text("Weapon: " + c.weapon).appendTo(description);
+    $("<p>").addClass("charStatus").text("POW: " + c.attackPower + " HP: " + c.health).appendTo(description);
     $("<div>").addClass("clear").appendTo(root);
     return root;
 }
