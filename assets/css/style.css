@@ -160,8 +160,8 @@ p {
 	.character {
 		width: 100%;
 		height: 64px;
-		margin: 16px 0 0;
-		padding: 8px 0;
+		margin: 0;
+		padding: 16px 0;
 		border-radius: 0;
 	}
 	.avatarCircle {
