@@ -20,7 +20,7 @@ var Character = function(shortName, name, weapon, power, health) {
 var CharacterView = function (character) {
 	var root = $("<div>").addClass("character " + character.shortName);
 	var avatar = $("<div>").addClass("charAvatar").appendTo(root);
-	var picture = $("<div>").addClass("avatarCircle").appendTo(avatar);
+	var picture = $("<img>").addClass("avatarCircle").attr("src", "assets/img/" + character.shortName + ".png").appendTo(avatar);
 	var description = $("<div>").addClass("charDescription").appendTo(root);
 	$("<h3>").addClass("charName").text(character.name).appendTo(description);
 	$("<p>").addClass("charWeapon").text("Weapon: " + character.weapon).appendTo(description);
