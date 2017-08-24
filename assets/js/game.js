@@ -19,6 +19,12 @@ var Character = function(shortName, name, weapon, power, health, color) {
         this.attackPower += this.basePower;
         return other;
     }
+
+    this.reset = function() {
+        this.attackPower = this.basePower;
+        this.health = this.maxHealth;
+        return this;
+    }
 }
 
 var CharacterView = function (c) {
@@ -75,6 +81,10 @@ var Game = function(characters, updateUI) {
     this.handleCurrentState = function() {
         switch (this.state) {
             case "NEW_GAME":
+                this.player = undefined;
+                this.remainingOpponents = new Array();
+                this.defeatedOpponents = new Array();
+                break;
             case "CHOOSE_PLAYER":
             case "CHOOSE_OPPONENT":
             case "FIGHT_SCREEN":
@@ -84,5 +94,6 @@ var Game = function(characters, updateUI) {
             default:
                 throw "Have not implemented " + this.state;
         }
+        this.updateUI();
     };
 };

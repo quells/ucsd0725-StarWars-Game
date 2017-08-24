@@ -13,6 +13,9 @@
 			<div id="screen">
 				<h1>Star Wars RPG</h1>
 				<h1 id="loading">Loading...</h1>
+				<div id="characters">
+
+				</div>
 			</div>
 		</div>
 
@@ -22,36 +25,36 @@
 		<script type="text/javascript">
 		var starfieldCanvas = $("#starfield")[0];
 		var starfield;
-		var characters = {};
+		var characters = new Array();
 		var json = {
-		    "luke": {
-		        "name": "Luke Skywalker",
-		        "weapon": "Lightsaber",
-		        "power": 4,
-		        "health": 90,
-		        "color": "#68C1E5"
-		    },
-		    "leia": {
-		        "name": "Princess Leia Organa",
-		        "weapon": "Blaster",
-		        "power": 8,
-		        "health": 130,
-		        "color": "#32C560"
-		    },
-		    "trooper": {
-		        "name": "Startrooper XJ-72",
-		        "weapon": "Blaster",
-		        "power": 12,
-		        "health": 140,
-		        "color": "#EEEEEE"
-		    },
-		    "vader": {
-		        "name": "Darth Vader",
-		        "weapon": "Lightsaber",
-		        "power": 16,
-		        "health": 310,
-		        "color": "#E96B5F"
-		    }
+			"luke": {
+				"name": "Luke Skywalker",
+				"weapon": "Lightsaber",
+				"power": 4,
+				"health": 90,
+				"color": "#68C1E5"
+			},
+			"leia": {
+				"name": "Princess Leia Organa",
+				"weapon": "Blaster",
+				"power": 8,
+				"health": 130,
+				"color": "#32C560"
+			},
+			"trooper": {
+				"name": "Startrooper XJ-72",
+				"weapon": "Blaster",
+				"power": 12,
+				"health": 140,
+				"color": "#EEEEEE"
+			},
+			"vader": {
+				"name": "Darth Vader",
+				"weapon": "Lightsaber",
+				"power": 16,
+				"health": 310,
+				"color": "#E96B5F"
+			}
 		};
 		var game;
 
@@ -60,28 +63,44 @@
 			starfieldCanvas.height = document.body.clientHeight;
 			starfield.draw();
 
-			$(".avatarHealth").each(function() {
-				var canvas = $(this)[0];
-				canvas.width = canvas.clientWidth;
-				canvas.height = canvas.clientHeight;
-				var r = canvas.clientWidth * 0.5;
-				var char = characters[$(this).attr("name")];
-				if (char.health > 0) {
-					var healthFraction = char.health / char.maxHealth;
-					var healthTheta = (1.5 - 2*healthFraction)*Math.PI;
-					var ctx = canvas.getContext("2d");
-					ctx.lineWidth = 4;
-					ctx.strokeStyle = $(this).attr("brandcolor");
-					ctx.beginPath();
-					ctx.arc(r, r, r-3, healthTheta, Math.PI*1.5);
-					ctx.stroke();
+			if (game != undefined) {
+				$("#characters").empty();
+				switch (game.state) {
+					case "NEW_GAME":
+						for (var i = 0; i < game.characters.length; i++) {
+							var char = game.characters[i];
+							$("#characters").append(new CharacterView(char));
+						}
+						$("<div>").addClass("clear").appendTo($("#characters"));
+						break;
+					case "CHOOSE_PLAYER":
+					case "CHOOSE_OPPONENT":
+					case "FIGHT_SCREEN":
+					case "ATTACKING":
+					case "GAME_LOST":
+					case "GAME_WON":
+					default:
+						throw "Have not implemented drawing for " + game.state;
 				}
-			});
 
-			for (c in characters) {
-				var char = characters[c];
-				var status = $("." + c + " > .charDescription > .charStatus");
-				status.text("POW: " + char.attackPower + " HP: " + char.health);
+				for (var i = 0; i < game.characters.length; i++) {
+					var char = game.characters[i];
+					var jqCanvas = $("." + char.shortName + " > .charAvatar > .avatarHealth");
+					var canvas = jqCanvas[0];
+					canvas.width = canvas.clientWidth;
+					canvas.height = canvas.clientHeight;
+					var r = canvas.clientWidth * 0.5;
+					if (char.health > 0) {
+						var healthFraction = char.health / char.maxHealth;
+						var healthTheta = (1.5 - 2*healthFraction)*Math.PI;
+						var ctx = canvas.getContext("2d");
+						ctx.lineWidth = 4;
+						ctx.strokeStyle = jqCanvas.attr("brandcolor");
+						ctx.beginPath();
+						ctx.arc(r, r, r-3, healthTheta, Math.PI*1.5);
+						ctx.stroke();
+					}
+				}
 			}
 		}
 
@@ -103,13 +122,12 @@
 				for (shortName in json) {
 					var c = json[shortName];
 					var char = new Character(shortName, c.name, c.weapon, c.power, c.health, c.color);
-					characters[shortName] = char;
-					$("#screen").append(CharacterView(char));
+					characters.push(char);
 				}
-				$("<div>").addClass("clear").appendTo($("#screen"));
 				$("#loading").remove();
-				drawScreen();
+
 				game = new Game(characters, drawScreen);
+				game.handleCurrentState();
 			// });
 		});
 
