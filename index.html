@@ -23,7 +23,37 @@
 		var starfieldCanvas = $("#starfield")[0];
 		var starfield;
 		var characters = {};
-
+		var json = {
+		    "luke": {
+		        "name": "Luke Skywalker",
+		        "weapon": "Lightsaber",
+		        "power": 4,
+		        "health": 90,
+		        "color": "#68C1E5"
+		    },
+		    "leia": {
+		        "name": "Princess Leia Organa",
+		        "weapon": "Blaster",
+		        "power": 8,
+		        "health": 130,
+		        "color": "#32C560"
+		    },
+		    "trooper": {
+		        "name": "Startrooper XJ-72",
+		        "weapon": "Blaster",
+		        "power": 12,
+		        "health": 140,
+		        "color": "#EEEEEE"
+		    },
+		    "vader": {
+		        "name": "Darth Vader",
+		        "weapon": "Lightsaber",
+		        "power": 16,
+		        "health": 310,
+		        "color": "#E96B5F"
+		    }
+		};
+		var game;
 
 		function drawScreen() {
 			starfieldCanvas.width = document.body.clientWidth;
@@ -52,7 +82,6 @@
 				var char = characters[c];
 				var status = $("." + c + " > .charDescription > .charStatus");
 				status.text("POW: " + char.attackPower + " HP: " + char.health);
-				console.log(status)
 			}
 		}
 
@@ -70,7 +99,7 @@
 			starfieldCanvas.height = document.body.clientHeight;
 			starfield = new Starfield(starfieldCanvas);
 
-			$.getJSON("assets/js/characters.json", function(json) {
+			// $.getJSON("assets/js/characters.json", function(json) {
 				for (shortName in json) {
 					var c = json[shortName];
 					var char = new Character(shortName, c.name, c.weapon, c.power, c.health, c.color);
@@ -80,7 +109,8 @@
 				$("<div>").addClass("clear").appendTo($("#screen"));
 				$("#loading").remove();
 				drawScreen();
-			});
+				game = new Game(characters, drawScreen);
+			// });
 		});
 
 		$(window).resize(function() {
