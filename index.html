@@ -21,6 +21,7 @@
 		</div>
 
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+		<script src="assets/js/utility.js" charset="utf-8"></script>
 		<script src="assets/js/starfield.js" charset="utf-8"></script>
 		<script src="assets/js/character.js" charset="utf-8"></script>
 		<script src="assets/js/game.js" charset="utf-8"></script>
@@ -68,9 +69,12 @@
 
 		function drawScreen() {
 			if (game != undefined) {
-				$("#characters").empty();
 				switch (game.state) {
 					case "NEW_GAME":
+						break;
+					case "CHOOSE_PLAYER":
+						$("#characters").empty();
+						$("<h2>").text("Choose a Character to Play As:").appendTo("#characters");
 						for (shortName in game.characters) {
 							var char = game.characters[shortName];
 							var charView = new CharacterView(char);
@@ -81,19 +85,74 @@
 						}
 						$("<div>").addClass("clear").appendTo($("#characters"));
 						break;
-					case "CHOOSE_PLAYER":
 					case "CHOOSE_OPPONENT":
+						$("#characters").empty();
+						$("#characters").append($("<h2>").text("Current Condition:"));
+						$("#characters").append(new CharacterView(game.player));
+						$("#characters").append($("<div>").addClass("clear"));
+						$("#characters").append($("<h2>").text("Choose an Opponent:"));
+						for (shortName in game.remainingOpponents) {
+							var char = game.characters[shortName];
+							var charView = new CharacterView(char);
+							charView.click(function(event) {
+								game.selectCharacter(event);
+							});
+							$("#characters").append(charView);
+						}
+						$("#characters").append($("<div>").addClass("clear"));
+						// $("#characters").append($("<hr>"));
+						// $("#characters").append(new CharacterView(game.player));
+						// $("#characters").append($("<div>").addClass("clear"));
+						break;
 					case "FIGHT_SCREEN":
+						$("#characters").empty();
+						$("#characters").append($("<h2>").text(game.player.name + " is attacking " + game.opponent.name + ":"));
+						$("#characters").append(new CharacterView(game.player));
+						$("#characters").append(new CharacterView(game.opponent));
+						$("#characters").append($("<div>").addClass("clear"));
+						$("#characters").append($("<button>").text("ATTACK").click(function() { game.transitionTo("ATTACKING"); }));
+						$("#characters").append($("<button>").text("RETREAT").click(function() {
+							game.remainingOpponents[game.opponent.shortName] = game.opponent;
+							game.opponent = undefined;
+							game.transitionTo("CHOOSE_OPPONENT");
+						}));
+						var remainingOpponentCount = Object.keys(game.remainingOpponents).length;
+						if (remainingOpponentCount > 0) {
+							$("#characters").append($("<hr>"));
+							$("#characters").append($("<h2>").text("Remaining Opponents:"));
+							for (shortName in game.remainingOpponents) {
+								var char = game.characters[shortName];
+								var charView = new CharacterView(char);
+								charView.click(function(event) {
+									game.selectCharacter(event);
+								});
+								$("#characters").append(charView);
+							}
+							$("#characters").append($("<div>").addClass("clear"));
+						}
+						break;
 					case "ATTACKING":
+						break;
 					case "GAME_LOST":
 					case "GAME_WON":
 					default:
 						throw "Have not implemented drawing for " + game.state;
 				}
 
-				for (shortName in game.characters) {
-					var char = game.characters[shortName];
-					var jqCanvas = $("." + shortName + " > .charAvatar > .avatarHealth");
+				var livingCharacters = [];
+				if (game.state == "NEW_GAME" || game.state == "CHOOSE_PLAYER") {
+					for (shortName in game.characters) {
+						livingCharacters.push(game.characters[shortName]);
+					}
+				} else {
+					if (game.player.health > 0) { livingCharacters.push(game.player); }
+					if (game.opponent != undefined && game.opponent.health > 0) { livingCharacters.push(game.opponent); }
+					for (shortName in game.remainingOpponents) { livingCharacters.push(game.remainingOpponents[shortName]); }
+				}
+				for (var i = 0; i < livingCharacters.length; i++) {
+					var char = livingCharacters[i];
+					var jqCanvas = $("." + char.shortName + " > .charAvatar > .avatarHealth");
+					if (jqCanvas.length < 1) { continue; }
 					var canvas = jqCanvas[0];
 					canvas.width = canvas.clientWidth;
 					canvas.height = canvas.clientHeight;

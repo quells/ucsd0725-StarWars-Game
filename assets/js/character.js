@@ -10,22 +10,22 @@ var Character = function(shortName, name, weapon, power, health, color) {
 
     this.maxHealth = health;
     this.health = health;
+};
 
-    this.attack = function(other) {
-        other.health -= this.attackPower;
-        if (other.health > 0) {
-            this.health -= other.defendPower;
-        }
-        this.attackPower += this.basePower;
-        return other;
+function AttackBetween(player, opponent) {
+    opponent.health -= player.attackPower;
+    if (opponent.health > 0) {
+        player.health -= opponent.defendPower;
     }
+    player.attackPower += player.basePower;
+    return {"player": player, "opponent": opponent};
+};
 
-    this.reset = function() {
-        this.attackPower = this.basePower;
-        this.health = this.maxHealth;
-        return this;
-    }
-}
+function ResetCharacter(c) {
+    c.attackPower = c.basePower;
+    c.health = c.maxHealth;
+    return c;
+};
 
 var CharacterView = function (c) {
     var root = $("<div>").addClass("character " + c.shortName).attr("shortname", c.shortName);
