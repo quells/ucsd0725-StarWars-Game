@@ -36,6 +36,11 @@ body {
 	position: relative;
 }
 
+footer {
+	text-align: center;
+	padding: 2em 0 0 0;
+}
+
 h1 {
 	color: #FAEA40;
 	font-size: 3.0em;

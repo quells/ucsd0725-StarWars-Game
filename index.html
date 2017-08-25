@@ -13,19 +13,27 @@
 			<div id="screen">
 				<h1>Star Wars RPG</h1>
 				<h1 id="loading">Loading...</h1>
-				<div id="characters">
-
-				</div>
+				<div id="characters"></div>
+				<!-- <footer>
+					<button type="button" id="stopAnimation">Stop Animations</button>
+				</footer> -->
 			</div>
 		</div>
 
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
 		<script src="assets/js/starfield.js" charset="utf-8"></script>
+		<script src="assets/js/character.js" charset="utf-8"></script>
 		<script src="assets/js/game.js" charset="utf-8"></script>
 		<script type="text/javascript">
 		var starfieldCanvas = $("#starfield")[0];
 		var starfield;
-		var characters = new Array();
+		function drawStars() {
+			starfieldCanvas.width = document.body.clientWidth;
+			starfieldCanvas.height = document.body.clientHeight;
+			starfield.draw();
+		}
+		var stopAnimationFlag = false;
+		var characters = {};
 		var json = {
 			"luke": {
 				"name": "Luke Skywalker",
@@ -59,17 +67,17 @@
 		var game;
 
 		function drawScreen() {
-			starfieldCanvas.width = document.body.clientWidth;
-			starfieldCanvas.height = document.body.clientHeight;
-			starfield.draw();
-
 			if (game != undefined) {
 				$("#characters").empty();
 				switch (game.state) {
 					case "NEW_GAME":
-						for (var i = 0; i < game.characters.length; i++) {
-							var char = game.characters[i];
-							$("#characters").append(new CharacterView(char));
+						for (shortName in game.characters) {
+							var char = game.characters[shortName];
+							var charView = new CharacterView(char);
+							charView.click(function(event) {
+								game.selectCharacter(event);
+							});
+							$("#characters").append(charView);
 						}
 						$("<div>").addClass("clear").appendTo($("#characters"));
 						break;
@@ -83,9 +91,9 @@
 						throw "Have not implemented drawing for " + game.state;
 				}
 
-				for (var i = 0; i < game.characters.length; i++) {
-					var char = game.characters[i];
-					var jqCanvas = $("." + char.shortName + " > .charAvatar > .avatarHealth");
+				for (shortName in game.characters) {
+					var char = game.characters[shortName];
+					var jqCanvas = $("." + shortName + " > .charAvatar > .avatarHealth");
 					var canvas = jqCanvas[0];
 					canvas.width = canvas.clientWidth;
 					canvas.height = canvas.clientHeight;
@@ -106,10 +114,12 @@
 
 		// var lastFrame = Date.now();
 		function drawLoop() {
+			drawStars();
 		// var delta = Date.now() - lastFrame;
 		// lastFrame += delta;
 		// console.log(delta);
-			drawScreen();
+			// drawScreen();
+			if (stopAnimationFlag) { return; }
 			requestAnimationFrame(drawLoop);
 		}
 
@@ -118,20 +128,27 @@
 			starfieldCanvas.height = document.body.clientHeight;
 			starfield = new Starfield(starfieldCanvas);
 
+			// $("#stopAnimation").click(function() {
+			// 	stopAnimationFlag = true;
+			// });
+
 			// $.getJSON("assets/js/characters.json", function(json) {
 				for (shortName in json) {
 					var c = json[shortName];
 					var char = new Character(shortName, c.name, c.weapon, c.power, c.health, c.color);
-					characters.push(char);
+					characters[shortName] = char;
 				}
 				$("#loading").remove();
 
 				game = new Game(characters, drawScreen);
 				game.handleCurrentState();
 			// });
+			drawStars();
+			// drawLoop();
 		});
 
 		$(window).resize(function() {
+			drawStars();
 			drawScreen();
 		});
 		</script>
