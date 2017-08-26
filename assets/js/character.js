@@ -19,7 +19,7 @@ function AttackBetween(player, opponent) {
     if (opponent.health > 0) {
         player.health -= opponent.defendPower;
         msg += "<br>";
-        msg += opponent + " dealt " + opponent.defendPower + " damage.";
+        msg += opponent.name + " dealt " + opponent.defendPower + " damage.";
     }
     player.attackPower += player.basePower;
     return {"player": player, "opponent": opponent, "msg": msg};
