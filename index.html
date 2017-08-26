@@ -80,6 +80,10 @@
 						charDiv.append(new CharacterView(game.opponent));
 						charDiv.append($("<div>").addClass("clear"));
 
+						if (game.lastMessage != "") {
+							charDiv.append($("<h3>").html(game.lastMessage));
+						}
+
 						var buttons = $("<div>").attr("id", "actionButtons");
 						buttons.append($("<button>").text("ATTACK").click(function() {
 							game.transitionTo("ATTACKING");

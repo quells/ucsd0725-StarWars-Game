@@ -13,12 +13,16 @@ var Character = function(shortName, name, weapon, power, health, color) {
 };
 
 function AttackBetween(player, opponent) {
+    var msg = "";
     opponent.health -= player.attackPower;
+    msg += player.name + " dealt " + player.attackPower + " damage.";
     if (opponent.health > 0) {
         player.health -= opponent.defendPower;
+        msg += "<br>";
+        msg += opponent + " dealt " + opponent.defendPower + " damage.";
     }
     player.attackPower += player.basePower;
-    return {"player": player, "opponent": opponent};
+    return {"player": player, "opponent": opponent, "msg": msg};
 };
 
 function ResetCharacter(c) {

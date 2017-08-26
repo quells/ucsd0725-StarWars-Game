@@ -6,6 +6,7 @@ var Game = function(characters, updateUI) {
     this.opponent = undefined;
     this.remainingOpponents = {};
     this.defeatedOpponents = {};
+    this.lastMessage = "";
 
     this.state = "NEW_GAME";
     this.states = ["NEW_GAME", "CHOOSE_PLAYER", "CHOOSE_OPPONENT", "FIGHT_SCREEN", "ATTACKING", "GAME_LOST", "GAME_WON"];
@@ -59,12 +60,15 @@ var Game = function(characters, updateUI) {
                 var result = AttackBetween(this.player, this.opponent);
                 this.player = result["player"];
                 this.opponent = result["opponent"];
+                this.lastMessage = result["msg"];
                 if (this.player.health <= 0) {
+                    this.lastMessage = "";
                     this.transitionTo("GAME_LOST");
                 } else if (this.opponent.health <= 0) {
                     alert("You have defeated " + this.opponent.name + "!");
                     this.defeatedOpponents[this.opponent.shortName] = this.opponent;
                     this.opponent = undefined;
+                    this.lastMessage = "";
                     this.transitionTo("CHOOSE_OPPONENT");
                 } else {
                     this.transitionTo("FIGHT_SCREEN");
